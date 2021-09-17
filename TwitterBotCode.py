@@ -8,6 +8,7 @@ today = date.today()
 current_time = now.strftime("%H:%M:%S")
 current_date = today.strftime("%d-%b-%Y")
 
+#CoinGecko API
 btc_request = requests.get("#CoinGeckoAPI", headers = {'accept': 'application/json'})
 btc_price = str(btc_request.json()['bitcoin']['eur'])
 btc_24_round = round(btc_request.json()['bitcoin']['eur_24h_change'],2)
@@ -26,7 +27,7 @@ ltc_24_round = round(ltc_request.json()['litecoin']['eur_24h_change'],2)
 ltc_24_change = str(ltc_24_round)
 
 
-
+#Twitter API
 consumer_key = 'Twitter consumer_key'
 consumer_secret = 'Twitter consumer_secret'
 access_token = 'Twitter access_token'
