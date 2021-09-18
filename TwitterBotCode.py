@@ -1,12 +1,11 @@
-from datetime import datetime, date
+from datetime import datetime
 import tweepy
 import requests
 import json
 
 now = datetime.now()
 today = date.today()
-current_time = now.strftime("%H:%M:%S")
-current_date = today.strftime("%d-%b-%Y")
+current_time = now.strftime("%H:%M")
 
 #CoinGecko API
 btc_request = requests.get("#CoinGeckoAPI", headers = {'accept': 'application/json'})
@@ -25,6 +24,21 @@ ltc_request = requests.get("#CoinGeckoAPI", headers = {'accept': 'application/js
 ltc_price = str(ltc_request.json()['litecoin']['eur'])
 ltc_24_round = round(ltc_request.json()['litecoin']['eur_24h_change'],2)
 ltc_24_change = str(ltc_24_round)
+
+if btc_24_round > 0 :
+    btc_emoji = "🟢"
+else:
+    btc_emoji = "🔴"
+
+if eth_24_round > 0 :
+    eth_emoji = "🟢"
+else:
+    eth_emoji = "🔴"
+
+if ltc_24_round > 0 :
+    ltc_emoji = "🟢"
+else:
+    ltc_emoji = "🔴"
 
 
 #Twitter API
@@ -45,6 +59,10 @@ def AuthHandler():
 
 oauth = AuthHandler()
 api = tweepy.API(oauth)
-api.update_status('Crypto Price For Today ' + current_date + ' : \n#BTC: '+ btc_price + ' € , ('+ btc_24_change + ' %)💰\n#ETH : '+ eth_price + ' € , ('+ eth_24_change + ' %)💰\n#LTC : '+ ltc_price + ' € , ('+ ltc_24_change + ' %)💰\nCrypto #ToTheMoon 🚀')
+api.update_status('Crypto Price For Today ' + current_time + ' : '
+'\n#BTC: '+ btc_price + ' € , ('+ btc_24_change + ' %)' + btc_emoji + '💰'
+'\n#ETH : '+ eth_price + ' € , ('+ eth_24_change + ' %)' + eth_emoji + '💰'
+'\n#LTC : '+ ltc_price + ' € , ('+ ltc_24_change + ' %)' + ltc_emoji + '💰'
+'\nCrypto #ToTheMoon 🚀')
 
 print("Twitter post has been posted, Time:",current_time)
